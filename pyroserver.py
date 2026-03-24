@@ -4,27 +4,45 @@ class Server:
     # @Pyro4.expose, means that the preceding method will be remotely accessible.
     @Pyro4.expose
     def add(self, op1, op2):
-        return op1 + op2
+        try:
+            return op1 + op2
+        except Exception as e:
+            return e
 
     @Pyro4.expose
     def sub(self, op1, op2):
-        return op1 - op2
+        try:
+            return op1 - op2
+        except Exception as e:
+            return e
 
     @Pyro4.expose
     def mult(self, op1, op2):
-        return op1 * op2
+        try:
+            return op1 * op2
+        except Exception as e:
+            return e
 
     @Pyro4.expose
     def div(self, op1, op2):
-        return op1 / op2
+        try:
+            return op1 / op2
+        except Exception as e:
+            return e
 
     @Pyro4.expose
     def mod(self, op1, op2):
-        return op1 % op2
+        try:
+            return op1 % op2
+        except Exception as e:
+            return e
 
     @Pyro4.expose
     def sqrt(self, op1):
-        return op1 ** 0.5
+        try:
+            return op1 ** 0.5
+        except Exception as e:
+            return e
 
 def startServer():
     # Next, build the server instance of the Server class:
