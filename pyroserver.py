@@ -8,15 +8,15 @@ class Server:
 
     @Pyro4.expose
     def sub(self, op1, op2):
-        return op1 + op2
+        return op1 - op2
 
     @Pyro4.expose
     def mult(self, op1, op2):
-        return op1 + op2
+        return op1 * op2
 
     @Pyro4.expose
     def div(self, op1, op2):
-        return op1 + op2
+        return op1 / op2
 
     @Pyro4.expose
     def mod(self, op1, op2):
