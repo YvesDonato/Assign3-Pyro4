@@ -1,0 +1,30 @@
+services:
+  nameserver:
+    image: python:3.9-slim
+    command: sh -c "pip install Pyro4 && pyro4-ns -n 0.0.0.0 -p 9090"
+    ports:
+      - "9090:9090"
+
+  pyro-server:
+    build: ./pyro
+    environment:
+      - PYRO_HOST=0.0.0.0
+      - PYRO_NS_HOST=nameserver
+      - PYRO_NS_PORT=9090
+    depends_on:
+      - nameserver
+
+  socket-server:
+    build: ./socket
+    environment:
+      - PYRO_NS_HOST=nameserver
+      - PYRO_NS_PORT=9090
+    ports:
+      - "9999:9999"
+    depends_on:
+      - pyro-server
+
+  socket-client:
+    build: ./client
+    depends_on:
+      - socket-server
