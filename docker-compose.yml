@@ -2,13 +2,13 @@ services:
   nameserver:
     image: python:3.9-slim
     command: sh -c "pip install Pyro4 && pyro4-ns -n 0.0.0.0 -p 9090"
-    ports:
-      - "9090:9090"
 
   pyro-server:
     build: ./pyro
     environment:
-      - PYRO_HOST=0.0.0.0
+      - PYRO_BIND_HOST=0.0.0.0
+      - PYRO_PUBLIC_HOST=pyro-server
+      - PYRO_SERVER_PORT=9091
       - PYRO_NS_HOST=nameserver
       - PYRO_NS_PORT=9090
     depends_on:
@@ -17,14 +17,19 @@ services:
   socket-server:
     build: ./socket
     environment:
+      - SOCKET_SERVER_BIND_HOST=0.0.0.0
+      - SOCKET_SERVER_PORT=9999
       - PYRO_NS_HOST=nameserver
       - PYRO_NS_PORT=9090
-    ports:
-      - "9999:9999"
     depends_on:
       - pyro-server
 
   socket-client:
     build: ./client
+    environment:
+      - SOCKET_SERVER_HOST=socket-server
+      - SOCKET_SERVER_PORT=9999
+    stdin_open: true
+    tty: true
     depends_on:
       - socket-server
